@@ -32,6 +32,14 @@ const studentSchema = new mongoose.Schema(
       maxlength: [1024, "Password cannot be more than 1024 characters"],
       select: true,
     },
+    profilePicture: {
+      type: String,
+      default: "",
+    },
+    imageUrl: {
+      type: String,
+      default: "",
+    },
     age: {
       type: Number,
       required: true,

@@ -21,5 +21,15 @@ const loginStudent = async ({ email, password }) => {
   return { student, token };
 };
 
+const updateStudentProfile = async (id, updatedData) => {
+  const student = await Student.findByIdAndUpdate(id, updatedData, {
+    new: true,
+    runValidators: true,
+  }).select("-password");
 
-export { registerStudent, loginStudent };
+  if (!student) throw new Error("Student not found");
+
+  return student;
+};
+
+export { registerStudent, loginStudent, updateStudentProfile };
