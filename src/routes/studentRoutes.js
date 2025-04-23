@@ -1,6 +1,6 @@
 import express from "express";
 import { register, login, getMyProfile, updateMyProfile, uploadProfilePicture, changePassword, fetchStudentByEmail } from "../controller/studentController.js";
-import { protect } from "../middleware/auth.js";
+import { protect } from "../middleware/studentAuth.js";
 import upload from "../middleware/upload.js";
 
 const router = express.Router();
