@@ -21,6 +21,10 @@ const loginStudent = async ({ email, password }) => {
   return { student, token };
 };
 
+const getStudentByEmail  = async (email) => {
+  return await Student.findOne({ email });
+};
+
 const updateStudentProfile = async (id, updatedData) => {
   const student = await Student.findByIdAndUpdate(id, updatedData, {
     new: true,
@@ -32,4 +36,4 @@ const updateStudentProfile = async (id, updatedData) => {
   return student;
 };
 
-export { registerStudent, loginStudent, updateStudentProfile };
+export { registerStudent, loginStudent, updateStudentProfile, getStudentByEmail };

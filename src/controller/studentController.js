@@ -2,6 +2,7 @@ import {
   registerStudent,
   loginStudent,
   updateStudentProfile,
+  getStudentByEmail,
 } from "../service/studentService.js";
 
 import Student from "../schema/studentSchema.js";
@@ -54,6 +55,21 @@ const getMyProfile = async (req, res) => {
       message: "Something went wrong",
       error: error.message,
     });
+  }
+};
+
+const fetchStudentByEmail = async (req, res) => {
+  try {
+    const { email } = req.params;
+    const student = await getStudentByEmail(email);
+
+    if (!student) {
+      return res.status(404).json({ success: false, message: "Student not found" });
+    }
+
+    res.status(200).json({ success: true, student });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Error fetching student", error: err.message });
   }
 };
 
@@ -143,4 +159,5 @@ export {
   updateMyProfile,
   uploadProfilePicture,
   changePassword,
+  fetchStudentByEmail,
 };
