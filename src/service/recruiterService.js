@@ -13,4 +13,8 @@ const updateRecruiter = async (id, update) => {
   return await Recruiter.findByIdAndUpdate(id, update, { new: true });
 };
 
+export const deleteRecruiterById = async (id) => {
+  return await Recruiter.findByIdAndDelete(id);
+};
+
 export { createRecruiter, findRecruiterByEmail, updateRecruiter };

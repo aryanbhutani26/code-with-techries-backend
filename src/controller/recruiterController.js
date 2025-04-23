@@ -3,6 +3,7 @@ import {
   createRecruiter,
   findRecruiterByEmail,
   updateRecruiter,
+  deleteRecruiterById,
 } from "../service/recruiterService.js";
 import Recruiter from "../schema/recruiterSchema.js";
 import bcrypt from "bcrypt";
@@ -160,6 +161,31 @@ const changePassword = async (req, res) => {
   }
 };
 
+const deleteRecruiter = async (req, res) => {
+  try {
+    const recruiterId = req.recruiter._id; 
+    const deleted = await deleteRecruiterById(recruiterId);
+
+    if (!deleted) {
+      return res.status(404).json({
+        success: false,
+        message: "Recruiter not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Recruiter deleted successfully",
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Error deleting recruiter",
+      error: err.message,
+    });
+  }
+};
+
 export {
   registerRecruiter,
   loginRecruiter,
@@ -168,4 +194,5 @@ export {
   uploadRecruiterImage,
   changePassword,
   fetchRecruiterByEmail,
+  deleteRecruiter,
 };
