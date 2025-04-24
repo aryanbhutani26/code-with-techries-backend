@@ -10,7 +10,7 @@ import {
 
 dotenv.config();
 
-export const loginAdmin = async (req, res) => {
+const loginAdmin = async (req, res) => {
     const { email, password } = req.body;
   
     try {
@@ -48,7 +48,7 @@ export const loginAdmin = async (req, res) => {
     }
   };
 
-export const updateAdminNameController = async (req, res) => {
+const updateAdmin = async (req, res) => {
   try {
     const updatedAdmin = await updateAdminName(req.admin._id, req.body.name);
     res.status(200).json({
@@ -61,7 +61,7 @@ export const updateAdminNameController = async (req, res) => {
   }
 };
 
-export const uploadAdminProfilePicture = async (req, res) => {
+const uploadAdminProfilePicture = async (req, res) => {
   try {
     const updatedAdmin = await updateAdminProfileImage(
       req.admin._id,
@@ -81,3 +81,6 @@ export const uploadAdminProfilePicture = async (req, res) => {
     });
   }
 };
+
+
+export { loginAdmin, updateAdmin, uploadAdminProfilePicture };
