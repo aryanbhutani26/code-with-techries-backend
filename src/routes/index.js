@@ -3,6 +3,7 @@ import studentRoute from './studentRoutes.js';
 import recruiterRoute from "./recruiterRoutes.js";
 import developerRoute from "./developerRoutes.js";
 import teacherRoute from "./teacherRoutes.js";
+import adminRoute from "./adminRoutes.js";
 
 const router = express.Router();
 
@@ -22,6 +23,10 @@ const Routes = [
     {
         path: "/teachers",
         route: teacherRoute,
+    },
+    {
+        path: "/admin",
+        route: adminRoute,
     },
 ];
 
