@@ -2,6 +2,7 @@ import express from 'express';
 import studentRoute from './studentRoutes.js';
 import recruiterRoute from "./recruiterRoutes.js";
 import developerRoute from "./developerRoutes.js";
+import teacherRoute from "./teacherRoutes.js";
 
 const router = express.Router();
 
@@ -17,6 +18,10 @@ const Routes = [
     {
         path: "/developers",
         route: developerRoute,
+    },
+    {
+        path: "/teachers",
+        route: teacherRoute,
     },
 ];
 
