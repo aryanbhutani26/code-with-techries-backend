@@ -1,6 +1,4 @@
-// const mongoose = require("mongoose");
 import mongoose from "mongoose";
-
 
 const careerSchema = new mongoose.Schema({
   title: {
@@ -11,6 +9,9 @@ const careerSchema = new mongoose.Schema({
   description: {
     type: String,
     required: [true, "Job description is required"],
+    trim: true,
+    maxlength: [70, "Description cannot exceed 70 characters"],
+    minlength: [10, "Description must be at least 10 characters"],
   },
   location: {
     type: String,
@@ -31,10 +32,8 @@ const careerSchema = new mongoose.Schema({
       message: "At least one skill must be specified",
     },
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
+}, {
+  timestamps: true,
 });
 
 const Career = mongoose.model("Career", careerSchema);

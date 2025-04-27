@@ -1,21 +1,21 @@
 import express from "express";
-// const careerController = require("../controllers/careerController");
-import careerController from "../controller/careerController.js";
+import { createCareerController, getAllCareerController, getCareerByIdController, updateCareerByIdController, deleteCareerByIdController } from "../controller/careerController.js";
+
 const router = express.Router();
 
 // Create a job
-router.post("/", careerController.createCareer);
+router.post("/", createCareerController);
 
 // Get all jobs
-router.get("/", careerController.getAllCareers);
+router.get("/get", getAllCareerController);
 
 // Get job by ID
-router.get("/:id", careerController.getCareerById);
+router.get("/:id", getCareerByIdController);
 
 // Update a job by ID
-router.put("/:id", careerController.updateCareerById);
+router.put("/update/:id", updateCareerByIdController);
 
 // Delete a job by ID
-router.delete("/:id", careerController.deleteCareerById);
+router.delete("/delete/:id", deleteCareerByIdController);
 
 export default router;

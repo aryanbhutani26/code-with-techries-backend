@@ -1,5 +1,5 @@
-// const Career = require("../schema/careerModel");
-import Career from "../schema/careerModel.js";
+import Career from "../schema/careerSchema.js";
+
 // Create a new job
 const createCareer = async (careerData) => {
   const career = new Career(careerData);
@@ -33,7 +33,7 @@ const deleteCareerById = async (id) => {
   await Career.findByIdAndDelete(id);
 };
 
-export default{
+export {
   createCareer,
   getAllCareers,
   getCareerById,

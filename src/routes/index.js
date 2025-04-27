@@ -15,9 +15,6 @@ const Routes = [
     {
         path: "/recruiters",
         route: recruiterRoute,
-    },{
-        path: "/careers",
-        route: careerRoute,
     },
     {
         path: "/developers",
@@ -30,6 +27,10 @@ const Routes = [
     {
         path: "/admin",
         route: adminRoute,
+    },
+    {
+        path: "/careers",
+        route: careerRoute,
     },
 ];
 
