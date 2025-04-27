@@ -6,7 +6,7 @@ const teacherSchema = new mongoose.Schema(
     name: {
       type: String,
       trim: true,
-      default: "",
+      required: [true, "Name is required"],
     },
     username: {
       type: String,
@@ -18,7 +18,7 @@ const teacherSchema = new mongoose.Schema(
       type: String,
       unique: true,
       trim: true,
-      default: "",
+      required: [true, "Email is required"],
       match: [
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
         "Please fill a valid email address",
@@ -45,7 +45,7 @@ const teacherSchema = new mongoose.Schema(
     },
     subject: {
       type: [String],
-      default: "",
+      default: [],
     },
     linkedin: {
       type: String,
