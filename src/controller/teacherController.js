@@ -55,7 +55,6 @@ const loginTeacher = async (req, res) => {
 
 const getTeacherProfile = async (req, res) => {
   try {
-    // Use req.user._id instead of req.teacher._id since your middleware assigns the teacher object to req.user
     const teacher = await findTeacherById(req.user._id);
     if (!teacher) {
       return res.status(404).json({ message: "Teacher not found" });
@@ -76,12 +75,10 @@ const getTeacherProfile = async (req, res) => {
 
 const updateTeacher = async (req, res) => {
   try {
-    // Don't allow the username to be updated.
     if (req.body.username) {
       delete req.body.username;
     }
 
-    // Use req.user._id instead of req.teacher._id
     const updated = await updateTeacherProfile(req.user._id, req.body);
     if (!updated) {
       return res.status(404).json({ message: "Teacher not found" });
@@ -130,17 +127,15 @@ const getTeacherByUsername = async (req, res) => {
 
 const uploadTeacherImage = async (req, res) => {
   try {
-    // Check if file is uploaded
     if (!req.file) {
       return res
         .status(400)
         .json({ success: false, message: "No file uploaded" });
     }
 
-    // The URL of the uploaded image in Cloudinary is in req.file.path
     const teacher = await updateTeacherProfile(req.user._id, {
-      profilePicture: req.file.path, // Cloudinary URL of the image
-      imageUrl: req.file.path, // Cloudinary URL of the image
+      profilePicture: req.file.path,
+      imageUrl: req.file.path, 
     });
 
     if (!teacher) {
