@@ -14,7 +14,6 @@ const generateToken = (id) =>
 const registerTeacher = async (req, res) => {
   try {
     const { username, password, name, email } = req.body;
-    console.log(req.body); // Add this before trying to create the teacher
     const teacherExists = await findTeacherByUsername(username);
     if (teacherExists) {
       return res.status(400).json({ message: "Username already taken" });
