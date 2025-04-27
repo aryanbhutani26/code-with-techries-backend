@@ -1,8 +1,8 @@
-import exress from 'express';
+import express from 'express';
 import { protectTeacher } from "../middleware/teacherAuth.js";
 import { createNewClass, deleteExistingClass, getAllClasses, updateExistingClass } from '../controller/classController.js';
 
-const router = exress.Router();
+const router = express.Router();
 
 router.post("/create", protectTeacher, createNewClass);
 router.get("/all", getAllClasses);
