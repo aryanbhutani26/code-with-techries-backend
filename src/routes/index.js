@@ -4,7 +4,7 @@ import recruiterRoute from "./recruiterRoutes.js";
 import developerRoute from "./developerRoutes.js";
 import teacherRoute from "./teacherRoutes.js";
 import adminRoute from "./adminRoutes.js";
-
+import careerRoute from "./careerRoutes.js";
 const router = express.Router();
 
 const Routes = [
@@ -15,6 +15,9 @@ const Routes = [
     {
         path: "/recruiters",
         route: recruiterRoute,
+    },{
+        path: "/careers",
+        route: careerRoute,
     },
     {
         path: "/developers",
