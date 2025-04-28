@@ -43,6 +43,7 @@ const classSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+      default: "",
     },
     relatedTopics: {
       type: [String],
