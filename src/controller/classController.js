@@ -1,4 +1,4 @@
-import ClassModel from "../schema/classSchema.js"; // Your class model
+import ClassModel from "../schema/classSchema.js";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 dotenv.config();
