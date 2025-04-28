@@ -1,7 +1,12 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 
 const classSchema = new mongoose.Schema(
   {
+    teacherId: {
+      type: Types.ObjectId,
+      ref: "Teacher",
+      required: true,
+    },
     className: {
       type: String,
       required: true,
@@ -29,7 +34,7 @@ const classSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    googleMeetLink: {
+    WhatsAppCommunityLink: {
       type: String,
       trim: true,
       default: "",
@@ -43,6 +48,14 @@ const classSchema = new mongoose.Schema(
       type: [String],
       default: [],
       required: true,
+    },
+    pendingChanges: {
+      type: Object,
+      default: null,
+    },
+    isPendingApproval: {
+      type: Boolean,
+      default: false,
     },
     originalPrice: {
       type: Number,
