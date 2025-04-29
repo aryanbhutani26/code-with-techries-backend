@@ -103,7 +103,6 @@ const updateMyProfile = async (req, res) => {
 
 const uploadStudentProfilePicture = async (req, res) => {
   try {
-    // Ensure the student is authenticated and has a profile picture uploaded
     if (!req.file) {
       return res.status(400).json({
         success: false,
@@ -111,19 +110,16 @@ const uploadStudentProfilePicture = async (req, res) => {
       });
     }
 
-    // Get student ID from the authenticated user
     const studentId = req.student.id;
 
-    // Get the uploaded file URL from Cloudinary response
-    const profilePictureUrl = req.file.path; // Assuming the URL is provided directly by the multer-cloudinary storage
+    const profilePictureUrl = req.file.path; 
 
-    // Update the student's profile with the new profile picture
     const updatedStudent = await Student.findByIdAndUpdate(
       studentId,
       {
         profilePicture: profilePictureUrl,
-        imageUrl: profilePictureUrl, // Also update imageUrl field with the same URL
-      }, // Assuming the profilePicture field exists in the Student schema
+        imageUrl: profilePictureUrl,
+      },
       { new: true }
     );
 
@@ -134,7 +130,6 @@ const uploadStudentProfilePicture = async (req, res) => {
       });
     }
 
-    // Return the updated student data
     res.status(200).json({
       success: true,
       message: "Profile picture updated successfully.",
