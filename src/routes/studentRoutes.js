@@ -1,16 +1,17 @@
 import express from "express";
 import { register, login, getMyProfile, updateMyProfile, uploadProfilePicture, changePassword, fetchStudentByEmail } from "../controller/studentController.js";
-import { protect } from "../middleware/studentAuth.js";
+import { protectStudent } from "../middleware/studentAuth.js";
+import { protectAdmin } from "../middleware/adminAuth.js";
 import upload from "../middleware/upload.js";
 
 const router = express.Router();
 
 router.post("/register", register);
 router.post("/login", login);
-router.get("/myprofile", protect, getMyProfile);
-router.get("/myprofile/email/:email", protect, fetchStudentByEmail)
-router.put("/updateprofile", protect, updateMyProfile);
-router.put("/myprofile/picture", protect, upload.single("image"), uploadProfilePicture);
-router.put("/myprofile/changepassword", protect, changePassword);
+router.get("/myprofile", protectStudent, getMyProfile);
+router.get("/myprofile/email/:email", protectStudent, protectAdmin, fetchStudentByEmail)
+router.put("/updateprofile", protectStudent, updateMyProfile);
+router.put("/myprofile/picture", protectStudent, upload.single("image"), uploadProfilePicture);
+router.put("/myprofile/changepassword", protectStudent, changePassword);
 
 export default router;

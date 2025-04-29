@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import Student from "../schema/studentSchema.js";
 
-export const protect = async (req, res, next) => {
+export const protectStudent = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
 
