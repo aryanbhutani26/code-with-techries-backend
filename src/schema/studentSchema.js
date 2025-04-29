@@ -33,6 +33,11 @@ const studentSchema = new mongoose.Schema(
       maxlength: [1024, "Password cannot be more than 1024 characters"],
       select: true,
     },
+    phoneNumber: {
+      type: "String",
+      required: true,
+      trim: true,
+    },
     profilePicture: {
       type: String,
       default: "",
@@ -43,23 +48,23 @@ const studentSchema = new mongoose.Schema(
     },
     age: {
       type: Number,
-      required: true,
+      default: 0,
     },
     degree: {
       type: String,
-      required: true,
+      default: "",
     },
     collegeName: {
       type: String,
-      required: true,
+      default: "",
     },
     currentCGPA: {
       type: Number,
-      required: true,
+      default: "",
     },
     passoutYear: {
       type: Number,
-      required: true,
+      default: "",
     },
     skills: {
       type: [String],
@@ -75,7 +80,7 @@ const studentSchema = new mongoose.Schema(
     },
     linkedIn: {
       type: String,
-      required: true,
+      default: "",
     },
   },
   {
