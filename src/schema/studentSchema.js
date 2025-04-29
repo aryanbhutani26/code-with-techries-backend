@@ -37,6 +37,7 @@ const studentSchema = new mongoose.Schema(
       type: "String",
       required: true,
       trim: true,
+      unique: true,
     },
     profilePicture: {
       type: String,

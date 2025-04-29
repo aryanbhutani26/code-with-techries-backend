@@ -4,8 +4,8 @@ const getAdminByEmail = async (email) => {
   return await Admin.findOne({ email });
 };
 
-const updateAdminName = async (id, name) => {
-  return await Admin.findByIdAndUpdate(id, { name }, { new: true });
+const updateAdminName = async (adminId, updates) => {
+  return await Admin.findByIdAndUpdate(adminId, updates, { new: true });
 };
 
 const updateAdminProfileImage = async (id, imagePath) => {

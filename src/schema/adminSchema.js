@@ -21,6 +21,12 @@ const adminSchema = new mongoose.Schema({
     required: true,
     default: "",
   },
+  phoneNumber: {
+    type: String,
+    required: true,
+    trim: true,
+    unique: true,
+  },
   profilePicture: {
     type: String,
     default: "",

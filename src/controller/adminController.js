@@ -48,18 +48,25 @@ const loginAdmin = async (req, res) => {
     }
   };
 
-const updateAdmin = async (req, res) => {
-  try {
-    const updatedAdmin = await updateAdminName(req.admin._id, req.body.name);
-    res.status(200).json({
-      success: true,
-      message: "Name updated",
-      admin: updatedAdmin,
-    });
-  } catch (err) {
-    res.status(500).json({ message: "Update failed", error: err.message });
-  }
-};
+  const updateAdmin = async (req, res) => {
+    try {
+      const { name, phoneNumber } = req.body;
+  
+      const updatedAdmin = await updateAdminName(req.admin._id, { name, phoneNumber });
+  
+      res.status(200).json({
+        success: true,
+        message: "Admin profile updated",
+        admin: updatedAdmin,
+      });
+    } catch (err) {
+      res.status(500).json({
+        success: false,
+        message: "Update failed",
+        error: err.message,
+      });
+    }
+  };
 
 const uploadAdminProfilePicture = async (req, res) => {
   try {

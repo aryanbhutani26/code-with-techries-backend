@@ -31,28 +31,30 @@ const developerSchema = new mongoose.Schema(
       maxlength: [1024, "Password cannot be more than 1024 characters"],
       select: true,
     },
-    fieldOfInterest: {
+    phoneNumber: {
       type: String,
       required: true,
+      trim: true,
+      unique: true,
+    },
+    fieldOfInterest: {
+      type: String,
       default: "",
     },
     skills: {
       type: [String],
-      required: true,
-      default: "",
+      default: [],
     },
     experience: {
       type: String,
-      required: true,
+      default: "",
     },
     linkedin: {
       type: String,
-      required: true,
       default: "",
     },
     github: {
       type: String,
-      required: true,
       default: "",
     },
     profilePicture: {

@@ -31,34 +31,34 @@ const recruiterSchema = new mongoose.Schema(
       maxlength: [1024, "Password cannot be more than 1024 characters"],
       select: true,
     },
-    companyName: {
+    phoneNumber: {
       type: String,
       required: true,
+      trim: true,
+      unique: true,
+    },
+    companyName: {
+      type: String,
       trim: true,
       default: "",
     },
     position: {
       type: String,
-      required: true,
       trim: true,
       default: "",
-      required: true,
     },
     companyDescription: {
       type: String,
       default: "",
       trim: true,
-      required: true,
     },
     companyType: {
       type: String,
-      required: true,
       trim: true,
       default: "",
     },
     linkedin: {
       type: String,
-      required: true,
       trim: true,
       default: "",
     },

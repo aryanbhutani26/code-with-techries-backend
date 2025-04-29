@@ -31,6 +31,12 @@ const teacherSchema = new mongoose.Schema(
       maxlength: [1024, "Password cannot be more than 1024 characters"],
       select: true,
     },
+    phoneNumber: {
+      type: String,
+      required: true,
+      trim: true,
+      unique: true,
+    },
     profilePicture: {
       type: String,
       default: "",
