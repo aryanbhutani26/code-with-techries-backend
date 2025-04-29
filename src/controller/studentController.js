@@ -152,6 +152,36 @@ const changePassword = async (req, res) => {
   }
 };
 
+
+const deleteStudent = async (req, res) => {
+  try {
+    const studentId = req.params.id;
+
+    const deletedStudent = await Student.findByIdAndDelete(studentId);
+
+    if (!deletedStudent) {
+      return res.status(404).json({
+        success: false,
+        message: "Student not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Student deleted successfully",
+      student: deletedStudent,
+    });
+  } catch (error) {
+    console.error("Error deleting student:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while deleting student",
+      error: error.message,
+    });
+  }
+};
+
+
 export {
   register,
   login,
@@ -160,4 +190,5 @@ export {
   uploadProfilePicture,
   changePassword,
   fetchStudentByEmail,
+  deleteStudent,
 };

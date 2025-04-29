@@ -10,10 +10,10 @@ router.post("/register", registerDeveloper);
 router.post("/login", loginDeveloper);
 router.get("/myprofile", protectDeveloper, getDeveloperProfile);
 router.put("/updateprofile", protectDeveloper, updateDeveloperProfile);
-router.get("/myprofile/email/:email", protectDeveloper, protectAdmin, fetchDeveloperByEmail);
+router.get("/myprofile/email/:email", protectAdmin, fetchDeveloperByEmail);
 router.post("/myprofile/picture", protectDeveloper, upload.single("image"), uploadDeveloperProfilePicture);
 router.post("/myprofile/changepassword", protectDeveloper, changeDeveloperPassword);
-router.delete("/myprofile/delete", protectDeveloper, protectAdmin, deleteDeveloper);
+router.delete("/myprofile/delete", protectDeveloper, deleteDeveloper);
 
 
 
