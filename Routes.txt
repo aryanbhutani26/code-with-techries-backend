@@ -7,5 +7,65 @@ STUDENT ROUTES :-
 5. http://localhost:5050/v1/students/updateprofile ----> student update their profile
 6. http://localhost:5050/v1/students/myprofile/picture ----> student upload their profile picture
 7. http://localhost:5050/v1/students/myprofile/changepassword ----> student change their password
+8. http://localhost:5050/v1/students/myprofile/delete ---> 
 
+DEVELOPER ROUTES :-
+
+1. http://localhost:5050/v1/developers/register ----> for developer registration
+2. http://localhost:5050/v1/developers/login ----> developer login
+3. http://localhost:5050/v1/developers/myprofile ----> developer get their profile
+4. http://localhost:5050/v1/developers/updateprofile ----> developer update their profile
+5. http://localhost:5050/v1/developers/myprofile/email/:email ----> fetch developer by email id
+6. http://localhost:5050/v1/developers/myprofile/picture ----> developer upload their profile picture
+7. http://localhost:5050/v1/developers/myprofile/changepassword ----> developer change their password
+8. http://localhost:5050/v1/developers/myprofile/delete ----> developer delete their profile
+
+
+RECRUITER ROUTES :-
+
+1. http://localhost:5050/v1/recruiters/register ----> for recruiter registration
+2. http://localhost:5050/v1/recruiters/login ----> for recruiter login
+3. http://localhost:5050/v1/recruiters/myprofile ----> recruiter get their profile
+4. http://localhost:5050/v1/recruiters/myprofile/email/:email ----> fetch recruiter using email id
+5. http://localhost:5050/v1/recruiters/updateprofile ----> update recruiter profile
+6. http://localhost:5050/v1/recruiters/myprofile/picture ----> recruiter update their profile picture
+7. http://localhost:5050/v1/recruiters/myprofile/changepassword ----> recruiter change their password
+8. http://localhost:5050/v1/recruiters/myprofile/delete ----> recruiter delete their profile
+
+
+TEACHER ROUTES :-
+
+1. http://localhost:5050/v1/teachers/register ----> register a teacher 
+2. http://localhost:5050/v1/teachers/login ----> login teacher
+3. http://localhost:5050/v1/teachers/myprofile ----> teacher get their profile
+4. http://localhost:5050/v1/teachers/myprofile/:username ----> get teacher by username
+5. http://localhost:5050/v1/teachers/myprofile/update ----> update teacher profile
+6. http://localhost:5050/v1/teachers/myprofile/picture ----> update teacher profile picture
+7. http://localhost:5050/v1/teachers/delete/:username ----> delete teacher by username
+
+
+ADMIN ROUTES :-
+
+1. http://localhost:5050/v1/admin/login ----> admin login
+2. http://localhost:5050/v1/admin/updateprofile ----> admin update their profile
+3. http://localhost:5050/v1/admin/profile/picture ----> admin upload their profile picture
+
+
+CAREER ROUTES :-
+
+1. http://localhost:5050/v1/careers/create ---> create a new career
+2. http://localhost:5050/v1/careers/get ---> gel all careers
+3. http://localhost:5050/v1/careers/career/:id---> get career by id
+4. http://localhost:5050/v1/careers/update/:id---> update career by id 
+5. http://localhost:5050/v1/careers/delete/:id ---> delete career by id
+
+
+CLASS ROUTES :-
+
+1. http://localhost:5050/v1/classes/create ----> create class
+2. http://localhost:5050/v1/classes/requestupdate/:id ----> request raised by teacher to update in class
+3. http://localhost:5050/v1/classes/approveupdate/:id ----> approve teacher request by admin
+4. http://localhost:5050/v1/classes/rejectupdate/:id ----> reject teacher request by admin
+5. http://localhost:5050/v1/classes/all ----> get all classes
+6. http://localhost:5050/v1/classes//delete/:id ----> delete a class
 
