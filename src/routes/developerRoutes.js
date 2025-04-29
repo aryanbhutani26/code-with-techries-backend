@@ -3,6 +3,7 @@ import { changeDeveloperPassword, deleteDeveloper, fetchDeveloperByEmail, getDev
 import { protectDeveloper } from "../middleware/developerAuth.js";
 import { protectAdmin } from "../middleware/adminAuth.js";
 import upload from "../middleware/upload.js";
+import setUserType from "../utils/userType.js";
 
 const router = express.Router();
 
@@ -11,7 +12,7 @@ router.post("/login", loginDeveloper);
 router.get("/myprofile", protectDeveloper, getDeveloperProfile);
 router.put("/updateprofile", protectDeveloper, updateDeveloperProfile);
 router.get("/myprofile/email/:email", protectAdmin, fetchDeveloperByEmail);
-router.post("/myprofile/picture", protectDeveloper, upload.single("image"), uploadDeveloperProfilePicture);
+router.post("/myprofile/picture", protectDeveloper, setUserType("developer"), upload.single("profilePicture"), uploadDeveloperProfilePicture);
 router.post("/myprofile/changepassword", protectDeveloper, changeDeveloperPassword);
 router.delete("/myprofile/delete", protectDeveloper, deleteDeveloper);
 

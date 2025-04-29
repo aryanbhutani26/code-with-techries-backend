@@ -129,24 +129,33 @@ const fetchDeveloperByEmail = async (req, res) => {
   }
 };
 
+
 const uploadDeveloperProfilePicture = async (req, res) => {
   try {
-    req.developer = req.user;
-    const developer = await updateDeveloperById(req.developer._id, {
-      profilePicture: req.file?.path || "",
-      imageUrl: req.file?.path || "",
+    const developerId = req.user?._id;
+
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "No image file uploaded",
+      });
+    }
+
+    const updatedDeveloper = await updateDeveloperById(developerId, {
+      profilePicture: req.file.path,
+      imageUrl: req.file.path,
     });
 
     res.status(200).json({
       success: true,
-      message: "Profile image updated",
-      developer,
+      message: "Profile picture updated successfully.",
+      data: updatedDeveloper,
     });
   } catch (err) {
     res.status(500).json({
       success: false,
-      error: "Image upload failed",
-      details: err.message,
+      message: "Image upload failed",
+      error: err.message,
     });
   }
 };

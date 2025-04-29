@@ -119,20 +119,30 @@ const updateRecruiterProfile = async (req, res) => {
 
 const uploadRecruiterImage = async (req, res) => {
   try {
-    const recruiter = await updateRecruiter(req.recruiter._id, {
-      profilePicture: req.file?.path || "",
-      imageUrl: req.file?.path || "",
+    // Ensure file is uploaded
+    if (!req.file || !req.file.path) {
+      return res.status(400).json({
+        success: false,
+        message: "No image file uploaded",
+      });
+    }
+
+    // Update recruiter document
+    const updatedRecruiter = await updateRecruiter(req.recruiter._id, {
+      profilePicture: req.file.path,
+      imageUrl: req.file.path,
     });
+
     res.status(200).json({
       success: true,
-      message: "Profile image updated",
-      recruiter,
+      message: "Profile picture updated successfully.",
+      data: updatedRecruiter,
     });
   } catch (err) {
     res.status(500).json({
       success: false,
-      error: "Image upload failed",
-      details: err.message,
+      message: "Image upload failed",
+      error: err.message,
     });
   }
 };

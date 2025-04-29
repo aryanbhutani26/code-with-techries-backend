@@ -64,12 +64,20 @@ const fetchStudentByEmail = async (req, res) => {
     const student = await getStudentByEmail(email);
 
     if (!student) {
-      return res.status(404).json({ success: false, message: "Student not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Student not found" });
     }
 
     res.status(200).json({ success: true, student });
   } catch (err) {
-    res.status(500).json({ success: false, message: "Error fetching student", error: err.message });
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Error fetching student",
+        error: err.message,
+      });
   }
 };
 
@@ -93,36 +101,50 @@ const updateMyProfile = async (req, res) => {
   }
 };
 
-const uploadProfilePicture = async (req, res) => {
+const uploadStudentProfilePicture = async (req, res) => {
   try {
+    // Ensure the student is authenticated and has a profile picture uploaded
     if (!req.file) {
-      return res
-        .status(400)
-        .json({ success: false, message: "No image file provided" });
+      return res.status(400).json({
+        success: false,
+        message: "Please upload a profile picture.",
+      });
     }
 
-    const imagePath = req.file.path; // public_id or file path
-    const imageUrl = req.file?.path || ""; // secure_url if using cloudinary-multer
+    // Get student ID from the authenticated user
+    const studentId = req.student.id;
 
-    const student = await Student.findByIdAndUpdate(
-      req.student._id,
+    // Get the uploaded file URL from Cloudinary response
+    const profilePictureUrl = req.file.path; // Assuming the URL is provided directly by the multer-cloudinary storage
+
+    // Update the student's profile with the new profile picture
+    const updatedStudent = await Student.findByIdAndUpdate(
+      studentId,
       {
-        profilePicture: imagePath,
-        imageUrl: imageUrl,
-      },
+        profilePicture: profilePictureUrl,
+        imageUrl: profilePictureUrl, // Also update imageUrl field with the same URL
+      }, // Assuming the profilePicture field exists in the Student schema
       { new: true }
-    ).select("-password");
+    );
 
+    if (!updatedStudent) {
+      return res.status(404).json({
+        success: false,
+        message: "Student not found.",
+      });
+    }
+
+    // Return the updated student data
     res.status(200).json({
       success: true,
-      message: "Profile picture updated",
-      imageUrl: imageUrl,
-      student,
+      message: "Profile picture updated successfully.",
+      data: updatedStudent,
     });
   } catch (err) {
+    console.error(err);
     res.status(500).json({
       success: false,
-      message: "Error in uploading profile picture",
+      message: "Server error.",
       error: err.message,
     });
   }
@@ -152,7 +174,6 @@ const changePassword = async (req, res) => {
   }
 };
 
-
 const deleteStudent = async (req, res) => {
   try {
     const studentId = req.params.id;
@@ -181,13 +202,12 @@ const deleteStudent = async (req, res) => {
   }
 };
 
-
 export {
   register,
   login,
   getMyProfile,
   updateMyProfile,
-  uploadProfilePicture,
+  uploadStudentProfilePicture,
   changePassword,
   fetchStudentByEmail,
   deleteStudent,

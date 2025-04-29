@@ -126,18 +126,21 @@ const getTeacherByUsername = async (req, res) => {
 
 const uploadTeacherImage = async (req, res) => {
   try {
+    const teacherId = req.user?._id;
+
     if (!req.file) {
-      return res
-        .status(400)
-        .json({ success: false, message: "No file uploaded" });
+      return res.status(400).json({
+        success: false,
+        message: "No image file uploaded",
+      });
     }
 
-    const teacher = await updateTeacherProfile(req.user._id, {
+    const updatedTeacher = await updateTeacherProfile(teacherId, {
       profilePicture: req.file.path,
-      imageUrl: req.file.path, 
+      imageUrl: req.file.path,
     });
 
-    if (!teacher) {
+    if (!updatedTeacher) {
       return res.status(404).json({
         success: false,
         message: "Teacher not found",
@@ -146,8 +149,8 @@ const uploadTeacherImage = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "Profile image updated",
-      teacher,
+      message: "Profile picture updated successfully.",
+      data: updatedTeacher,
     });
   } catch (err) {
     res.status(500).json({

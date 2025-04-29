@@ -3,7 +3,7 @@ import { deleteTeacherByUsername, getTeacherByUsername, getTeacherProfile, login
 import { protectTeacher } from "../middleware/teacherAuth.js";
 import upload from "../middleware/upload.js";
 import { protectAdmin } from "../middleware/adminAuth.js";
-
+import setUserType from "../utils/userType.js";
 const router = express.Router();
 
 router.post("/register", protectAdmin, registerTeacher);
@@ -11,7 +11,7 @@ router.post("/login", loginTeacher);
 router.get("/myprofile", protectTeacher, getTeacherProfile);
 router.get("/myprofile/:username", getTeacherByUsername);
 router.put("/myprofile/update", protectTeacher, updateTeacher);
-router.put("/myprofile/picture", protectTeacher, upload.single("image"), uploadTeacherImage);
+router.put("/myprofile/picture", protectTeacher, setUserType("teacher"), upload.single("profilePicture"), uploadTeacherImage);
 router.delete("/delete/:username", protectAdmin, deleteTeacherByUsername);
 
 export default router;

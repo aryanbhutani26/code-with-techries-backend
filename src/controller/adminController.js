@@ -63,15 +63,29 @@ const updateAdmin = async (req, res) => {
 
 const uploadAdminProfilePicture = async (req, res) => {
   try {
-    const updatedAdmin = await updateAdminProfileImage(
-      req.admin._id,
-      req.file?.path || ""
-    );
+    const adminId = req.admin?._id;
+
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "No image file uploaded",
+      });
+    }
+
+    // Just pass the image path string
+    const updatedAdmin = await updateAdminProfileImage(adminId, req.file.path);
+
+    if (!updatedAdmin) {
+      return res.status(404).json({
+        success: false,
+        message: "Admin not found",
+      });
+    }
 
     res.status(200).json({
       success: true,
-      message: "Profile picture updated",
-      admin: updatedAdmin,
+      message: "Profile picture updated successfully.",
+      data: updatedAdmin,
     });
   } catch (err) {
     res.status(500).json({
@@ -81,6 +95,7 @@ const uploadAdminProfilePicture = async (req, res) => {
     });
   }
 };
+
 
 
 export { loginAdmin, updateAdmin, uploadAdminProfilePicture };
