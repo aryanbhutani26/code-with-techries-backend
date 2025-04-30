@@ -7,7 +7,6 @@ import setUserType from "../utils/userType.js";
 const router = express.Router();
 
 router.post("/login", loginAdmin);
-
 router.put("/updateprofile", protectAdmin, updateAdmin);
 router.post("/profile/picture", protectAdmin, setUserType("admin"), upload.single("profilePicture"), uploadAdminProfilePicture);
 

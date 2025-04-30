@@ -3,14 +3,11 @@ import jwt from "jsonwebtoken";
 import Student from "../schema/studentSchema.js";
 import Developer from "../schema/developerSchema.js";
 import Recruiter from "../schema/recruiterSchema.js";
-import Teacher from "../schema/teacherSchema.js"; // Add Teacher schema
-import Admin from "../schema/adminSchema.js"; // Add Admin schema
-
-
-
+import Teacher from "../schema/teacherSchema.js";
+import Admin from "../schema/adminSchema.js";
 
 const loginUser = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, username } = req.body;
 
   try {
     let user = null;
@@ -40,7 +37,7 @@ const loginUser = async (req, res) => {
 
     // Check Teacher collection
     if (!user) {
-      user = await Teacher.findOne({ email });
+      user = await Teacher.findOne({ username });
       if (user) {
         role = "teacher";
       }
@@ -70,7 +67,7 @@ const loginUser = async (req, res) => {
     // Generate JWT token
     const token = jwt.sign(
       { id: user._id, role },
-      process.env.JWT_SECRET, // Make sure you have JWT_SECRET in your .env
+      process.env.JWT_SECRET, 
       { expiresIn: "1h" }
     );
 
