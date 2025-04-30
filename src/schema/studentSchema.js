@@ -33,8 +33,14 @@ const studentSchema = new mongoose.Schema(
       maxlength: [1024, "Password cannot be more than 1024 characters"],
       select: true,
     },
+    // phoneNumber: {
+    //   type: "String",
+    //   required: true,
+    //   trim: true,
+    //   unique: true,
+    // },
     phoneNumber: {
-      type: "String",
+      type: String,
       required: true,
       trim: true,
       unique: true,
@@ -59,17 +65,29 @@ const studentSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    // currentCGPA: {
+    //   type: Number,
+    //   default: "",
+    // },
+    // passoutYear: {
+    //   type: Number,
+    //   default: "",
+    // },
+    // skills: {
+    //   type: [String],
+    //   default: "",
+    // },
     currentCGPA: {
       type: Number,
-      default: "",
+      default: 0,
     },
     passoutYear: {
       type: Number,
-      default: "",
+      default: 0,
     },
     skills: {
       type: [String],
-      default: "",
+      default: [],
     },
     currentBacklogs: {
       type: Number,
@@ -103,8 +121,8 @@ studentSchema.methods.generateJWT = function () {
 };
 
 //Method to compare password during login
-studentSchema.methods.comparePassword = function (password) {
-  return bcrypt.compare(password, this.password);
+studentSchema.methods.comparePassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
 };
 
 const Student = mongoose.model("Student", studentSchema);
