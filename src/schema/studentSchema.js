@@ -34,7 +34,7 @@ const studentSchema = new mongoose.Schema(
       select: true,
     },
     phoneNumber: {
-      type: "String",
+      type: String,
       required: true,
       trim: true,
       unique: true,
@@ -61,15 +61,15 @@ const studentSchema = new mongoose.Schema(
     },
     currentCGPA: {
       type: Number,
-      default: "",
+      default: 0,
     },
     passoutYear: {
       type: Number,
-      default: "",
+      default: 0,
     },
     skills: {
       type: [String],
-      default: "",
+      default: [],
     },
     currentBacklogs: {
       type: Number,
