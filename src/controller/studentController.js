@@ -36,7 +36,7 @@ const login = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       success: false,
-      message: "Not loogedIn",
+      message: "Login Failed",
       error: err.message,
     });
   }

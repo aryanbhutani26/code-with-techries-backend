@@ -3,7 +3,7 @@ STUDENT ROUTES :-
 1. http://localhost:5050/v1/students/register ----> for student registration
 2. http://localhost:5050/v1/students/login ----> for student login
 3. http://localhost:5050/v1/students/myprofile ----> student get thier profile
-4. http://localhost:5050/v1/students/myprofile/email/:email ----> fetch student by email id
+4. http://localhost:5050/v1/students/myprofile/email/:email ----> fetch student by email id only by admin
 5. http://localhost:5050/v1/students/updateprofile ----> student update their profile
 6. http://localhost:5050/v1/students/myprofile/picture ----> student upload their profile picture
 7. http://localhost:5050/v1/students/myprofile/changepassword ----> student change their password
