@@ -3,10 +3,7 @@ import jwt from "jsonwebtoken";
 import Student from "../schema/studentSchema.js";
 import Developer from "../schema/developerSchema.js";
 import Recruiter from "../schema/recruiterSchema.js";
-import { loginStudent } from "../service/studentService.js"; // Assuming you already have this
-import { loginDeveloper } from "./developerController.js";
-import { loginRecruiter } from "./recruiterController.js"; 
-// import { loginRecruiter } from "../service/recruiterService.js"; // Assuming you have this
+
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
