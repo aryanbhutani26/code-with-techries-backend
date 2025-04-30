@@ -6,6 +6,9 @@ import Recruiter from "../schema/recruiterSchema.js";
 import Teacher from "../schema/teacherSchema.js"; // Add Teacher schema
 import Admin from "../schema/adminSchema.js"; // Add Admin schema
 
+
+
+
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
