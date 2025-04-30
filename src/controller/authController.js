@@ -3,10 +3,8 @@ import jwt from "jsonwebtoken";
 import Student from "../schema/studentSchema.js";
 import Developer from "../schema/developerSchema.js";
 import Recruiter from "../schema/recruiterSchema.js";
-import { loginStudent } from "../service/studentService.js"; // Assuming you already have this
-import { loginDeveloper } from "./developerController.js";
-import { loginRecruiter } from "./recruiterController.js"; 
-// import { loginRecruiter } from "../service/recruiterService.js"; // Assuming you have this
+import Teacher from "../schema/teacherSchema.js"; // Add Teacher schema
+import Admin from "../schema/adminSchema.js"; // Add Admin schema
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -15,13 +13,13 @@ const loginUser = async (req, res) => {
     let user = null;
     let role = null;
 
-    // First check Student collection
+    // Check Student collection
     user = await Student.findOne({ email });
     if (user) {
       role = "student";
     }
 
-    // If not found in Student, check Developer collection
+    // Check Developer collection
     if (!user) {
       user = await Developer.findOne({ email });
       if (user) {
@@ -29,11 +27,27 @@ const loginUser = async (req, res) => {
       }
     }
 
-    // If not found in Developer, check Recruiter collection
+    // Check Recruiter collection
     if (!user) {
       user = await Recruiter.findOne({ email });
       if (user) {
         role = "recruiter";
+      }
+    }
+
+    // Check Teacher collection
+    if (!user) {
+      user = await Teacher.findOne({ email });
+      if (user) {
+        role = "teacher";
+      }
+    }
+
+    // Check Admin collection
+    if (!user) {
+      user = await Admin.findOne({ email });
+      if (user) {
+        role = "admin";
       }
     }
 
