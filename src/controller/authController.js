@@ -7,7 +7,7 @@ import Teacher from "../schema/teacherSchema.js";
 import Admin from "../schema/adminSchema.js";
 
 const loginUser = async (req, res) => {
-  const { email, password, username } = req.body;
+  const { email, password } = req.body;
 
   try {
     let user = null;
@@ -37,7 +37,7 @@ const loginUser = async (req, res) => {
 
     // Check Teacher collection
     if (!user) {
-      user = await Teacher.findOne({ username });
+      user = await Teacher.findOne({ email });
       if (user) {
         role = "teacher";
       }
