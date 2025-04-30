@@ -6,13 +6,16 @@ import teacherRoute from "./teacherRoutes.js";
 import adminRoute from "./adminRoutes.js";
 import careerRoute from "./careerRoutes.js";
 import classRoute from "./classRoutes.js";
-
+import authRoute from "./authRoutes.js"; // Import the new auth route
 const router = express.Router();
 
 const Routes = [
     {
         path: "/students",
         route: studentRoute,
+    }, {
+        path: "/auth", // Add the path for authentication routes
+        route: authRoute,
     },
     {
         path: "/recruiters",

@@ -4,11 +4,15 @@ import { protectStudent } from "../middleware/studentAuth.js";
 import { protectAdmin } from "../middleware/adminAuth.js";
 import upload from "../middleware/upload.js";
 import setUserType from "../utils/userType.js";
+import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 router.post("/register", register);
 router.post("/login", login);
+
+router.get("/profile", protect(["student"]), getMyProfile);
+
 router.get("/myprofile", protectStudent, getMyProfile);
 router.get("/myprofile/email/:email", protectAdmin, fetchStudentByEmail)
 router.put("/updateprofile", protectStudent, updateMyProfile);
