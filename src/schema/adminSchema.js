@@ -23,7 +23,6 @@ const adminSchema = new mongoose.Schema({
   },
   phoneNumber: {
     type: String,
-    required: true,
     trim: true,
     unique: true,
   },
