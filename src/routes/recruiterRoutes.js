@@ -5,9 +5,11 @@ import { protectAdmin } from "../middleware/adminAuth.js";
 import upload from "../middleware/upload.js";
 import setUserType from "../utils/userType.js";
 import { protect } from "../middleware/authMiddleware.js";
+import checkEmailExists from "../middleware/checkEmailExists.js";
+
 const router = express.Router();
 
-router.post("/register", registerRecruiter);
+router.post("/register", checkEmailExists, registerRecruiter);
 router.post("/login", loginRecruiter);
 router.get("/myprofile", protect(["recruiter"]), getRecruiterProfile);
 router.get("/myprofile/email/:email", protectAdmin, fetchRecruiterByEmail);
