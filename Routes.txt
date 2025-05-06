@@ -70,4 +70,10 @@ CLASS ROUTES :-
 6. http://localhost:5050/v1/classes//delete/:id ----> delete a class
 
 COMMON LOGIN ROUTE :
+
 http://localhost:5050/v1/auth/login
+
+
+GLOBAL SEARCH QUERY API :
+
+http://localhost:5050/v1/search/suggest/?query=`${query}`
