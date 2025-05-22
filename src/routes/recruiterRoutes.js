@@ -4,14 +4,14 @@ import { protectRecruiter } from "../middleware/recruiterAuth.js";
 import { protectAdmin } from "../middleware/adminAuth.js";
 import upload from "../middleware/upload.js";
 import setUserType from "../utils/userType.js";
-import { protect } from "../middleware/authMiddleware.js";
 import checkEmailExists from "../middleware/checkEmailExists.js";
 
 const router = express.Router();
 
 router.post("/register", checkEmailExists, registerRecruiter);
 router.post("/login", loginRecruiter);
-router.get("/myprofile", protect(["recruiter"]), getRecruiterProfile);
+// router.get("/profile", protect(["recruiter"]), getRecruiterProfile);
+router.get("/myprofile", protectRecruiter, getRecruiterProfile);
 router.get("/myprofile/email/:email", protectAdmin, fetchRecruiterByEmail);
 router.put("/updateprofile", protectRecruiter, updateRecruiterProfile);
 router.put("/myprofile/picture", protectRecruiter, setUserType("recruiter"), upload.single("profilePicture"), uploadRecruiterImage);

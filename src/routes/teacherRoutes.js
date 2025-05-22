@@ -4,14 +4,13 @@ import { protectTeacher } from "../middleware/teacherAuth.js";
 import upload from "../middleware/upload.js";
 import { protectAdmin } from "../middleware/adminAuth.js";
 import setUserType from "../utils/userType.js";
-import { protect } from "../middleware/authMiddleware.js";
 import checkEmailExists from "../middleware/checkEmailExists.js";
 
 const router = express.Router();
 
 router.post("/register", checkEmailExists, protectAdmin, registerTeacher);
 router.post("/login", loginTeacher);
-router.get("/myprofile", protect(["teacher"]), getTeacherProfile);
+router.get("/myprofile", protectTeacher, getTeacherProfile);
 router.get("/myprofile/:username", getTeacherByUsername);
 router.put("/myprofile/update", protectTeacher, updateTeacher);
 router.put("/myprofile/picture", protectTeacher, setUserType("teacher"), upload.single("profilePicture"), uploadTeacherImage);
