@@ -19,8 +19,6 @@ const registerDeveloper = async (req, res) => {
     res.status(201).json({
       success: true,
       message: "Developer registered successfully",
-      token: generateToken(developer._id),
-      developer,
     });
   } catch (err) {
     res.status(400).json({
@@ -47,7 +45,6 @@ const loginDeveloper = async (req, res) => {
       success: true,
       message: "Login successfully",
       token: generateToken(developer._id),
-      developer,
     });
   } catch (err) {
     res.status(500).json({
@@ -61,7 +58,11 @@ const loginDeveloper = async (req, res) => {
 const getDeveloperProfile = async (req, res) => {
   try {
     const developer = await findDeveloperById(req.user._id);
-    res.status(200).json({ success: true, developer });
+    res.status(200).json({
+      success: true,
+      message: "Profile fetched successfully",
+      developer,
+    });
   } catch (err) {
     res.status(404).json({
       success: false,
@@ -128,7 +129,6 @@ const fetchDeveloperByEmail = async (req, res) => {
     });
   }
 };
-
 
 const uploadDeveloperProfilePicture = async (req, res) => {
   try {

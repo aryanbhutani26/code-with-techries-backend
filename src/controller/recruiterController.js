@@ -21,9 +21,7 @@ const registerRecruiter = async (req, res) => {
     const token = generateToken(recruiter._id);
     res.status(201).json({
       success: true,
-      message: "Successfully register",
-      recruiter,
-      token: token,
+      message: "Recruiter successfully register",
     });
   } catch (err) {
     res.status(500).json({
@@ -47,7 +45,6 @@ const loginRecruiter = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "successfully LogedIn",
-      recruiter,
       token,
     });
   } catch (err) {
@@ -64,7 +61,7 @@ const getRecruiterProfile = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Profile fetched successfully",
-      student: req.recruiter,
+      recruiter: req.recruiter,
     });
   } catch (error) {
     res.status(500).json({

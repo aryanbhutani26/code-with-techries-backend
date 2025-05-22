@@ -14,7 +14,6 @@ const register = async (req, res) => {
     res.status(201).json({
       success: true,
       message: "Student register successfully",
-      result,
     });
   } catch (err) {
     res.status(400).json({
@@ -28,10 +27,11 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   try {
     const result = await loginStudent(req.body);
+    const token = result.token;
     res.status(200).json({
       success: true,
       message: "Student logged In successfully.",
-      result,
+      token,
     });
   } catch (err) {
     res.status(400).json({

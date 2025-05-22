@@ -21,9 +21,7 @@ const registerTeacher = async (req, res) => {
     const teacher = await createTeacher(req.body);
     res.status(201).json({
       success: true,
-      message: "Teacher registered",
-      teacher,
-      token: generateToken(teacher._id),
+      message: "Teacher registered successfully",
     });
   } catch (err) {
     res.status(500).json({
@@ -44,7 +42,6 @@ const loginTeacher = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Login successful",
-      teacher,
       token: generateToken(teacher._id),
     });
   } catch (err) {
@@ -60,7 +57,7 @@ const getTeacherProfile = async (req, res) => {
     }
     res.status(200).json({
       success: true,
-      message: "Teacher profile retrieved",
+      message: "Teacher profile fetched successfully",
       teacher,
     });
   } catch (err) {
