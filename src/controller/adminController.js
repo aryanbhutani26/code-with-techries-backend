@@ -11,42 +11,33 @@ import {
 dotenv.config();
 
 const loginAdmin = async (req, res) => {
+  try {
     const { email, password } = req.body;
-  
-    try {
-      const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
-      const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
-  
-      if (email !== ADMIN_EMAIL || password !== ADMIN_PASSWORD) {
-        return res.status(401).json({ message: "Invalid credentials" });
-      }
-  
-      let admin = await getAdminByEmail(ADMIN_EMAIL);
-  
-      // Create admin if not exists
-      if (!admin) {
-        const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, 10);
-        const newAdmin = new Admin({
-          name: "Admin",
-          email: ADMIN_EMAIL,
-          password: hashedPassword,
-        });
-        admin = await newAdmin.save();
-      }
-  
-      const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, {
-        expiresIn: "7d",
-      });
-  
-      res.status(200).json({
-        success: true,
-        token,
-        admin,
-      });
-    } catch (err) {
-      res.status(500).json({ message: "Login error", error: err.message });
+
+    const admin = await Admin.findOne({ email });
+    if (!admin) {
+      return res.status(401).json({ message: "Invalid email" });
     }
-  };
+
+    const isPasswordValid = await bcrypt.compare(password, admin.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: "Invalid password" });
+    }
+
+    const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+
+    res.status(200).json({
+      success: true,
+      token,
+      admin,
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Login error", error: err.message });
+  }
+};
+
 
   const updateAdmin = async (req, res) => {
     try {

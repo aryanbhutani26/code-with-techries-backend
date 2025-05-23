@@ -34,10 +34,9 @@ const createAdmin = async (req, res) => {
     if (existing)
       return res.status(400).json({ message: "Admin already exists." });
 
-    const hashedPassword = await bcrypt.hash(password, 10);
     const newAdmin = await Admin.create({
       email,
-      password: hashedPassword,
+      password, 
       name,
       phoneNumber,
     });
