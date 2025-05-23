@@ -1,12 +1,11 @@
 import Admin from "../schema/adminSchema.js";
-import Teacher from "../schema/teacherSchema.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-export const loginSuperAdmin = (req, res) => {
+const loginSuperAdmin = (req, res) => {
   const { email, password } = req.body;
 
   if (
@@ -27,7 +26,7 @@ export const loginSuperAdmin = (req, res) => {
   }
 };
 
-export const createAdmin = async (req, res) => {
+const createAdmin = async (req, res) => {
   try {
     const { email, password, name, phoneNumber } = req.body;
 
@@ -56,4 +55,4 @@ export const createAdmin = async (req, res) => {
   }
 };
 
-
+export { loginSuperAdmin, createAdmin };
