@@ -25,6 +25,7 @@ const adminSchema = new mongoose.Schema({
     type: String,
     trim: true,
     unique: true,
+    required: true,
   },
   profilePicture: {
     type: String,

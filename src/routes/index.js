@@ -8,6 +8,7 @@ import careerRoute from "./careerRoutes.js";
 import classRoute from "./classRoutes.js";
 import authRoute from "./authRoutes.js";
 import searchRoute from "./searchRoute.js";
+import superAdminRoute from "./superAdminRoutes.js";
 
 const router = express.Router();
 
@@ -47,6 +48,10 @@ const Routes = [
     {
         path: "/search",
         route: searchRoute,
+    },
+    {
+        path: "/superadmin",
+        route: superAdminRoute,
     },
 ];
 

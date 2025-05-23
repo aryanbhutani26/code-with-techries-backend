@@ -5,10 +5,11 @@ import upload from "../middleware/upload.js";
 import { protectAdmin } from "../middleware/adminAuth.js";
 import setUserType from "../utils/userType.js";
 import checkEmailExists from "../middleware/checkEmailExists.js";
+import { protectAdminOrSuperAdmin } from "../middleware/admin_SuperAdminAuth.js";
 
 const router = express.Router();
 
-router.post("/register", checkEmailExists, protectAdmin, registerTeacher);
+router.post("/register", checkEmailExists, protectAdminOrSuperAdmin, registerTeacher);
 router.post("/login", loginTeacher);
 router.get("/myprofile", protectTeacher, getTeacherProfile);
 router.get("/myprofile/:username", getTeacherByUsername);
