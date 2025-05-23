@@ -35,7 +35,7 @@ RECRUITER ROUTES :-
 
 TEACHER ROUTES :-
 
-1. http://localhost:5050/v1/teachers/register ----> register a teacher 
+1. http://localhost:5050/v1/teachers/register ----> admin and superadmin both are able to register a teacher 
 2. http://localhost:5050/v1/teachers/login ----> login teacher
 3. http://localhost:5050/v1/teachers/myprofile ----> teacher get their profile
 4. http://localhost:5050/v1/teachers/myprofile/:username ----> get teacher by username
@@ -77,3 +77,9 @@ http://localhost:5050/v1/auth/login
 GLOBAL SEARCH QUERY API :
 
 http://localhost:5050/v1/search/suggest/?query=`${query}`
+
+
+SUPER ADMIN ROUTES: 
+
+1. http://localhost:5050/v1/superadmin/login ----> login super admin
+2. http://localhost:5050/v1/superadmin/create-admin ----> create a new admin
