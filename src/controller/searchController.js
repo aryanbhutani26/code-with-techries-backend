@@ -9,35 +9,65 @@ const globalSearch = async (req, res) => {
   try {
     const query = req.query.query?.toLowerCase();
     if (!query) {
-      return res.status(400).json({ success: false, message: "Query is required" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Query is required" });
     }
 
     const results = [];
 
     const models = [
-      { model: Student, role: "Student" },
-      { model: Teacher, role: "Teacher" },
-      { model: Developer, role: "Developer" },
-      { model: Recruiter, role: "Recruiter" },
-      { model: Career, role: "Career" },
-      { model: ClassModel, role: "Classes" }
+      {
+        model: Student,
+        role: "Student",
+        exclude: ["password", "email", "phoneNumber", "profilePicture", "imageUrl", "age", "degree", "collegeName", "currentCGPA", "passoutYear", "skills", "currentBacklogs", "certification", "linkedIn", "createdAt", "updatedAt", "_id", "__v"],
+      },
+      {
+        model: Teacher,
+        role: "Teacher",
+        exclude: ["email", "password", "phoneNumber", "profilePicture", "imageUrl", "experience", "subject", "linkedin", "github", "createdAt", "updatedAt", "_id", "__v"],
+      },
+      {
+        model: Developer,
+        role: "Developer",
+        exclude: ["email", "password", "phoneNumber", "profilePicture", "imageUrl", "fieldOfInterest", "skills", "experience", "linkedin", "github", "_id", "__v"],
+      },
+      {
+        model: Recruiter,
+        role: "Recruiter",
+        exclude: ["email", "password", "phoneNumber", "profilePicture", "imageUrl", "companyName", "companyDescription", "jobTitle", "jobDescription", "linkedin", "createdAt", "updatedAt", "_id", "__v"],
+      },
+      {
+        model: Career,
+        role: "Career",
+        exclude: ["createdAt", "updatedAt", "_id", "__v"]
+      },
+      {
+        model: ClassModel,
+        role: "Classes",
+        exclude: ["teacherId", "pendingChanges", "isPendingApproval", "createdAt", "updatedAt", "_id", "__v"],
+      },
     ];
 
-    for (const { model, role } of models) {
+    for (const { model, role, exclude } of models) {
       const documents = await model.find();
 
-      documents.forEach(doc => {
-        const entries = Object.entries(doc.toObject());
+      documents.forEach((doc) => {
+        const docObject = doc.toObject();
+        const entries = Object.entries(docObject);
+
         entries.forEach(([key, value]) => {
-          if (
-            typeof value === "string" &&
-            value.toLowerCase().includes(query)
-          ) {
+          // Skip if field is in exclude list or not a string
+          if (exclude.includes(key) || typeof value !== "string") {
+            return;
+          }
+
+          if (value.toLowerCase().includes(query)) {
             results.push({
               role,
               field: key,
               value,
-              id: doc._id
+              id: doc._id,
             });
           }
         });
@@ -46,12 +76,15 @@ const globalSearch = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      results
+      results,
     });
   } catch (err) {
-    res.status(500).json({ success: false, message: "Search failed", error: err.message });
+    res.status(500).json({
+      success: false,
+      message: "Search failed",
+      error: err.message,
+    });
   }
 };
-
 
 export default globalSearch;
