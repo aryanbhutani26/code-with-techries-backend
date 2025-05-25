@@ -1,8 +1,10 @@
 import ClassModel from "../schema/classSchema.js";
+import AdminModel from "../schema/adminSchema.js"; // Assuming admin data is stored here
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 dotenv.config();
 
+// Nodemailer transporter setup
 const transporter = nodemailer.createTransport({
   service: "Gmail",
   auth: {
@@ -11,6 +13,13 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+// Helper to get Admin Email
+const getAdminEmail = async () => {
+  const admin = await AdminModel.findOne();
+  return admin?.email || "fallback-admin@example.com"; // fallback email if admin not found
+};
+
+// Create a new class
 const createClass = async (req, res) => {
   try {
     const newClass = await ClassModel.create(req.body);
@@ -24,12 +33,12 @@ const createClass = async (req, res) => {
   }
 };
 
+// Teacher requests a class update
 const requestClassUpdate = async (req, res) => {
   try {
     const classId = req.params.id;
     const teacherId = req.user._id;
 
-    // Find the class by ID and verify the teacher owns it
     const classItem = await ClassModel.findOne({
       _id: classId,
       teacherId: teacherId,
@@ -42,7 +51,6 @@ const requestClassUpdate = async (req, res) => {
       });
     }
 
-    // Filter out fields that shouldn't be updated through this route
     const updateableFields = [
       "className",
       "shortDescription",
@@ -59,7 +67,6 @@ const requestClassUpdate = async (req, res) => {
       "language",
       "WhatsAppCommunityLink",
     ];
-
 
     const filteredChanges = {};
     for (const field of updateableFields) {
@@ -79,10 +86,11 @@ const requestClassUpdate = async (req, res) => {
     classItem.isPendingApproval = true;
     await classItem.save();
 
-    // Send Email to Admin
+    const adminEmail = await getAdminEmail();
+
     const mailOptions = {
       from: `"GG Ki Pathshala" <${process.env.SMTP_USER}>`,
-      to: process.env.ADMIN_EMAIL,
+      to: adminEmail,
       subject: `Class Update Approval Request from ${classItem.teacherId.name}`,
       html: `
         <h2>Teacher Request for Class Update</h2>
@@ -91,10 +99,8 @@ const requestClassUpdate = async (req, res) => {
         <p><strong>Username:</strong> ${classItem.teacherId.username}</p>
         <p><strong>Class Name:</strong> ${classItem.className}</p>
         <p><strong>Class ID:</strong> ${classItem._id}</p>
-
         <h3>Requested Changes:</h3>
         <pre>${JSON.stringify(filteredChanges, null, 2)}</pre>
-
         <p>Please review and approve or reject the changes from Admin Panel.</p>
       `,
     };
@@ -111,36 +117,23 @@ const requestClassUpdate = async (req, res) => {
   }
 };
 
+// Admin approves a class update
 const approveClassUpdate = async (req, res) => {
   try {
     const classId = req.params.id;
 
-    const classData = await ClassModel.findById(classId).populate(
-      "teacherId",
-      "email name"
-    );
+    const classData = await ClassModel.findById(classId).populate("teacherId", "email name");
 
-    if (!classData) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Class not found." });
-    }
-
-    if (!classData.isPendingApproval || !classData.pendingChanges) {
-      return res
-        .status(400)
-        .json({ success: false, message: "No pending changes found." });
+    if (!classData || !classData.isPendingApproval || !classData.pendingChanges) {
+      return res.status(404).json({
+        success: false,
+        message: "Class not found or no pending changes found.",
+      });
     }
 
     const pendingChanges = classData.pendingChanges;
     for (const [key, value] of Object.entries(pendingChanges)) {
-      // Skip updating these special fields
-      if (
-        key !== "_id" &&
-        key !== "teacherId" &&
-        key !== "createdAt" &&
-        key !== "updatedAt"
-      ) {
+      if (!["_id", "teacherId", "createdAt", "updatedAt"].includes(key)) {
         classData[key] = value;
       }
     }
@@ -150,8 +143,7 @@ const approveClassUpdate = async (req, res) => {
 
     await classData.save();
 
-    // Send confirmation email to the teacher
-    if (classData.teacherId && classData.teacherId.email) {
+    if (classData.teacherId?.email) {
       const mailOptions = {
         from: `"GG Ki Pathshala Admin" <${process.env.SMTP_USER}>`,
         to: classData.teacherId.email,
@@ -159,32 +151,18 @@ const approveClassUpdate = async (req, res) => {
         html: `
           <div style="font-family: Arial, sans-serif; padding: 20px;">
             <h2 style="color: #4CAF50;">Congratulations!</h2>
-            <p>Dear <strong>${
-              classData.teacherId.name || "Teacher"
-            }</strong>,</p>
-            <p>Your requested updates for the class <strong>"${
-              classData.className
-            }"</strong> have been <span style="color: green;">approved</span> by the admin.</p>
+            <p>Dear <strong>${classData.teacherId.name}</strong>,</p>
+            <p>Your updates for the class <strong>"${classData.className}"</strong> have been <span style="color: green;">approved</span>.</p>
             <h3>Updated Class Details:</h3>
             <ul>
               <li><strong>Class Name:</strong> ${classData.className}</li>
-              <li><strong>Short Description:</strong> ${
-                classData.shortDescription
-              }</li>
-              <li><strong>Teacher Rating:</strong> ${
-                classData.teacherRating
-              }</li>
-              <li><strong>Teacher Specialization:</strong> ${
-                classData.teacherSpecialization
-              }</li>
-              <li><strong>Price:</strong> ${
-                classData.discountedPrice
-                  ? `${classData.discountedPrice}`
-                  : "Not available"
-              }</li>
+              <li><strong>Short Description:</strong> ${classData.shortDescription}</li>
+              <li><strong>Teacher Rating:</strong> ${classData.teacherRating}</li>
+              <li><strong>Teacher Specialization:</strong> ${classData.teacherSpecialization}</li>
+              <li><strong>Discounted Price:</strong> ${classData.discountedPrice || "N/A"}</li>
             </ul>
-            <p>Thank you for being part of our platform!</p>
-            <p>Best Regards,<br>GG Ki Pathshala Admin Team</p>
+            <p>Thanks for contributing!</p>
+            <p>Regards,<br>GG Ki Pathshala Admin</p>
           </div>
         `,
       };
@@ -194,56 +172,42 @@ const approveClassUpdate = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "Class update approved and confirmation email sent to teacher.",
+      message: "Class update approved and confirmation email sent.",
       updatedClass: classData,
     });
   } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ success: false, message: "Server error", error: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
+// Admin rejects a class update
 const rejectClassUpdate = async (req, res) => {
   try {
     const classId = req.params.id;
-    const classItem = await ClassModel.findById(classId).populate(
-      "teacherId",
-      "email name"
-    );
+    const classItem = await ClassModel.findById(classId).populate("teacherId", "email name");
 
-    if (!classItem) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Class not found." });
+    if (!classItem || !classItem.isPendingApproval || !classItem.pendingChanges) {
+      return res.status(404).json({
+        success: false,
+        message: "Class not found or no pending changes found.",
+      });
     }
-
-    if (!classItem.isPendingApproval || !classItem.pendingChanges) {
-      return res
-        .status(400)
-        .json({ success: false, message: "No pending changes found." });
-    }
-
 
     classItem.pendingChanges = null;
     classItem.isPendingApproval = false;
     await classItem.save();
 
-    // Notify Teacher about rejection if teacher exists
-    if (classItem.teacherId && classItem.teacherId.email) {
+    if (classItem.teacherId?.email) {
       const mailOptions = {
         from: `"GG Ki Pathshala" <${process.env.SMTP_USER}>`,
         to: classItem.teacherId.email,
         subject: "Class Update Request Rejected",
         html: `
           <h2>Update Request Rejected</h2>
-          <p>Dear ${classItem.teacherId.name || "Teacher"},</p>
-          <p>Sorry, your requested changes for the class <strong>${
-            classItem.className
-          }</strong> have been rejected by the Admin.</p>
-          <p>If you have any questions, please contact support.</p>
-          <p>Best regards,<br>GG Ki Pathshala Team</p>
+          <p>Dear ${classItem.teacherId.name},</p>
+          <p>Your update request for the class <strong>${classItem.className}</strong> was <span style="color: red;">rejected</span>.</p>
+          <p>Contact support if you have questions.</p>
+          <p>Regards,<br>GG Ki Pathshala Team</p>
         `,
       };
 
@@ -259,14 +223,12 @@ const rejectClassUpdate = async (req, res) => {
   }
 };
 
+// Get all classes
 const getAllClasses = async (req, res) => {
   try {
     const classes = await ClassModel.find()
-      .populate({
-        path: "teacherId",
-        select: "name email username profilePicture -password",
-      })
-      .select("-pendingChanges -isPendingApproval"); 
+      .populate("teacherId", "name email username profilePicture -password")
+      .select("-pendingChanges -isPendingApproval");
 
     res.status(200).json({
       success: true,
@@ -282,6 +244,7 @@ const getAllClasses = async (req, res) => {
   }
 };
 
+// Delete a class
 const deleteClass = async (req, res) => {
   try {
     const classId = req.params.id;
@@ -289,9 +252,7 @@ const deleteClass = async (req, res) => {
     const deletedClass = await ClassModel.findByIdAndDelete(classId);
 
     if (!deletedClass) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Class not found" });
+      return res.status(404).json({ success: false, message: "Class not found" });
     }
 
     res.status(200).json({
