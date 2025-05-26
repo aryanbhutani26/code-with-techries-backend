@@ -4,6 +4,7 @@ import Developer from "../schema/developerSchema.js";
 import Recruiter from "../schema/recruiterSchema.js";
 import Career from "../schema/careerSchema.js";
 import ClassModel from "../schema/classSchema.js";
+import JobModel from "../schema/jobSchema.js";
 
 const globalSearch = async (req, res) => {
   try {
@@ -47,6 +48,11 @@ const globalSearch = async (req, res) => {
         role: "Classes",
         exclude: ["teacherId", "pendingChanges", "isPendingApproval", "createdAt", "updatedAt", "_id", "__v"],
       },
+      {
+        model: JobModel,
+        role: "Job",
+        exclude: ["jobType", "recruitmentQuota", "recruitmentPeriod", "salaryPerMonth", "experienceInYears", "location", "skills", "jobDescription", "createdAt", "updatedAt", "_id", "__v", "keywords"],
+      }
     ];
 
     for (const { model, role, exclude } of models) {
