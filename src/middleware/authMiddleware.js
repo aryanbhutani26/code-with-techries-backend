@@ -1,6 +1,11 @@
 import jwt from "jsonwebtoken";
+import Recruiter from "../schema/recruiterSchema.js";
+import Admin from "../schema/adminSchema.js";
+import dotenv from "dotenv";
 
-export const protect = (roles = []) => {
+dotenv.config();
+
+const protect = (roles = []) => {
   return (req, res, next) => {
     try {
       const token = req.headers.authorization?.split(" ")[1];
@@ -23,3 +28,38 @@ export const protect = (roles = []) => {
     }
   };
 };
+
+
+const protectRecruiterOrAdmin = async (req, res, next) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+
+    if (!token) {
+      return res.status(401).json({ message: "No token provided" });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Try finding recruiter
+    const recruiter = await Recruiter.findById(decoded.id);
+    if (recruiter) {
+      req.user = recruiter;
+      req.userType = "recruiter";
+      return next();
+    }
+
+    // Try finding admin
+    const admin = await Admin.findById(decoded.id);
+    if (admin) {
+      req.user = admin;
+      req.userType = "admin";
+      return next();
+    }
+
+    return res.status(403).json({ message: "Access denied. Not recruiter or admin." });
+  } catch (err) {
+    return res.status(401).json({ message: "Invalid or expired token", error: err.message });
+  }
+};
+
+export { protect, protectRecruiterOrAdmin };
