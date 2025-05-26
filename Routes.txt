@@ -92,3 +92,8 @@ JOBS ROUTES:
 3. http://localhost:5050/v1/jobs/location/:location ----> get jobs by location
 4. http://localhost:5050/v1/jobs/type/:jobType ----> get jobs by jobType
 5. http://localhost:5050/v1/jobs/delete/:id ----> delete a job by id
+
+
+JOBS SEARCH ROUTE:
+
+1. http://localhost:5050/v1/search/jobs/suggest/?query=`${query}` ------> search for a job
