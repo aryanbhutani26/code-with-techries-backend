@@ -83,3 +83,12 @@ SUPER ADMIN ROUTES:
 
 1. http://localhost:5050/v1/superadmin/login ----> login super admin
 2. http://localhost:5050/v1/superadmin/create-admin ----> create a new admin
+
+
+JOBS ROUTES:
+
+1. http://localhost:5050/v1/jobs/create ----> create a job
+2. http://localhost:5050/v1/jobs/all ----> get all jobs
+3. http://localhost:5050/v1/jobs/location/:location ----> get jobs by location
+4. http://localhost:5050/v1/jobs/type/:jobType ----> get jobs by jobType
+5. http://localhost:5050/v1/jobs/delete/:id ----> delete a job by id
