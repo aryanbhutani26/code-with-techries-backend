@@ -15,7 +15,7 @@ const globalSearch = async (req, res) => {
         .json({ success: false, message: "Query is required" });
     }
 
-    const results = [];
+    const resultsMap = {};
 
     const models = [
       {
@@ -152,16 +152,26 @@ const globalSearch = async (req, res) => {
           }
 
           if (value.toLowerCase().includes(query)) {
-            results.push({
-              role,
-              field: key,
-              value,
-              id: doc._id,
-            });
+            const docId = doc._id.toString();
+            
+            // Initialize the document in resultsMap if not present
+            if (!resultsMap[docId]) {
+              resultsMap[docId] = {
+                id: docId,
+                role: role,
+                fields: {}
+              };
+            }
+            
+            // Add the field to the document's fields
+            resultsMap[docId].fields[key] = value;
           }
         });
       });
     }
+
+    // Convert the map to an array of results
+    const results = Object.values(resultsMap);
 
     res.status(200).json({
       success: true,
@@ -176,6 +186,7 @@ const globalSearch = async (req, res) => {
   }
 };
 
+
 const jobSearch = async (req, res) => {
   try {
     const query = req.query.query?.toLowerCase();
@@ -186,7 +197,8 @@ const jobSearch = async (req, res) => {
       });
     }
 
-    const results = [];
+    // This will store results in the format: { [id]: { fields: { ... } } }
+    const resultsMap = {};
 
     // Fields to exclude completely from search
     const excludeFields = [
@@ -207,6 +219,7 @@ const jobSearch = async (req, res) => {
     jobs.forEach((job) => {
       const jobObject = job.toObject();
       const entries = Object.entries(jobObject);
+      const docId = job._id.toString();
 
       entries.forEach(([key, value]) => {
         // Skip excluded fields
@@ -217,25 +230,32 @@ const jobSearch = async (req, res) => {
         // Handle number fields (like experienceInYears)
         if (typeof value === "number") {
           if (value.toString().includes(query)) {
-            results.push({
-              field: key,
-              value: value,
-              id: job._id,
-            });
+            if (!resultsMap[docId]) {
+              resultsMap[docId] = {
+                id: docId,
+                fields: {}
+              };
+            }
+            resultsMap[docId].fields[key] = value;
           }
         }
         // Handle string fields
         else if (typeof value === "string") {
           if (value.toLowerCase().includes(query)) {
-            results.push({
-              field: key,
-              value,
-              id: job._id,
-            });
+            if (!resultsMap[docId]) {
+              resultsMap[docId] = {
+                id: docId,
+                fields: {}
+              };
+            }
+            resultsMap[docId].fields[key] = value;
           }
         }
       });
     });
+
+    // Convert the map to an array of results
+    const results = Object.values(resultsMap);
 
     res.status(200).json({
       success: true,
