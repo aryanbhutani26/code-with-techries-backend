@@ -4,11 +4,24 @@ import {
   getJobsByLocation,
   getJobsByType,
   deleteJobById,
+  getJobById,
 } from "../service/jobService.js";
+import { sendRecruiterNotification } from "../utils/JobEmail.js";
 
 const createJobController = async (req, res) => {
   try {
     const newJob = await createJob(req.body);
+
+    // If user is a recruiter, send email
+    if (req.user.role === "recruiter") {
+      await sendRecruiterNotification({
+        recruiterEmail: req.user.email,
+        recruiterName: req.user.name,
+        action: "created",
+        job: newJob,
+      });
+    }
+
     res.status(201).json({
       success: true,
       message: "Job created successfully",
@@ -22,6 +35,7 @@ const createJobController = async (req, res) => {
     });
   }
 };
+
 
 const getAllJobsController = async (req, res) => {
   try {
@@ -79,10 +93,23 @@ const getJobsByTypeController = async (req, res) => {
 const deleteJobController = async (req, res) => {
   try {
     const { id } = req.params;
-    const job = await deleteJobById(id);
+    const job = await getJobById(id);
     if (!job) {
       return res.status(404).json({ success: false, message: "Job not found" });
     }
+
+    const deletedJob = await deleteJobById(id);
+
+    // Send email only if recruiter
+    if (req.user.role === "recruiter") {
+      await sendRecruiterNotification({
+        recruiterEmail: req.user.email,
+        recruiterName: req.user.name,
+        action: "deleted",
+        job,
+      });
+    }
+
     res.status(200).json({
       success: true,
       message: "Job deleted successfully",
@@ -95,6 +122,7 @@ const deleteJobController = async (req, res) => {
     });
   }
 };
+
 
 export {
   createJobController,

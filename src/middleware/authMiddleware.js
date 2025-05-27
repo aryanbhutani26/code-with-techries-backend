@@ -45,6 +45,7 @@ const protectRecruiterOrAdmin = async (req, res, next) => {
     if (recruiter) {
       req.user = recruiter;
       req.userType = "recruiter";
+      req.user.role = "recruiter";
       return next();
     }
 
@@ -53,6 +54,7 @@ const protectRecruiterOrAdmin = async (req, res, next) => {
     if (admin) {
       req.user = admin;
       req.userType = "admin";
+      req.user.role = "admin";
       return next();
     }
 
