@@ -97,3 +97,14 @@ JOBS ROUTES:
 JOBS SEARCH ROUTE:
 
 1. http://localhost:5050/v1/search/jobs/suggest/?query=`${query}` ------> search for a job
+
+
+PROJECTS ROUTE:
+
+1. http://localhost:5050/v1/projects/create -----> create a new project
+2. http://localhost:5050/v1/projects/delete/:id -----> delete a project 
+3. http://localhost:5050/v1/projects/all -----> get all projects
+4. http://localhost:5050/v1/projects/techstack/:tech -----> get project by techstack
+5. http://localhost:5050/v1/projects/:id -----> get project by id
+6. http://localhost:5050/v1/projects/update/:id -----> update a project 
+7. http://localhost:5050/v1/projects/update/:projectId/upload-images -----> upload project images
