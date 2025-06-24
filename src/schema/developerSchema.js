@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import { text } from "express";
 
 const developerSchema = new mongoose.Schema(
   {
@@ -63,6 +64,33 @@ const developerSchema = new mongoose.Schema(
     },
     imageUrl: {
       type: String,
+      default: "",
+    },
+    experience: [
+      {
+        company: { type: String, required: true },
+        position: { type: String, required: true },
+        startDate: { type: Date, required: true },
+        endDate: { type: Date, required: true },
+        description: { type: String, required: true },
+      }
+    ],
+    projects: [
+      {
+        title: { type: String, required: true },
+        description: { type: String, required: true },
+        url: { type: String, required: true },
+        technologies: { type: [String], required: true },
+      }
+    ],
+    portfolioWebsite: {
+      type: String,
+      default: "",
+    },
+    bio: {
+      type: String,
+      trim: true,
+      maxlength: [500, "Bio cannot be more than 500 characters"],
       default: "",
     },
   },
