@@ -75,14 +75,38 @@ const studentSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    certification: {
-      type: String,
-      default: "",
-    },
     linkedIn: {
       type: String,
       default: "",
     },
+    bio: {
+      type: String,
+      required: true,
+      trim: true,
+      maxlength: [500, "Bio cannot be more than 500 characters"],
+    },
+    education: [
+      {
+        degree: { type: String, required: true },
+        institute: { type: String, required: true },
+        year: { type: String, required: true },
+      },
+    ],
+    projects: [
+      {
+        title: { type: String, required: true },
+        description: { type: String, required: true },
+        url: { type: String, required: true },
+        technologies: { type: [String], default: [] },
+      },
+    ],
+    certifications: [
+      {
+        title: { type: String, default: "" },
+        issuedBy: { type: String, default: "" },
+        date: { type: Date, default: "" },
+      },
+    ],
   },
   {
     timestamps: true,
