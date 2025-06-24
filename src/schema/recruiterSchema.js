@@ -70,6 +70,19 @@ const recruiterSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    companyWebsite: {
+      type: String,
+      required: true,
+    },
+
+    openPositions: [
+      {
+        title: { type: String, required: true },
+        location: { type: String, required: true },
+        salaryRange: { type: String, required: true },
+        postedOn: { type: Date, required: true },
+      },
+    ],
   },
   { timestamps: true }
 );
