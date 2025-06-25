@@ -11,6 +11,7 @@ import searchRoute from "./searchRoute.js";
 import superAdminRoute from "./superAdminRoutes.js";
 import jobRoute from "./jobRoutes.js";
 import projectRoute from "./projectRoutes.js";
+import courseRoute from "./courseRoutes.js";
 
 const router = express.Router();
 
@@ -63,6 +64,10 @@ const Routes = [
         path: "/projects",
         route: projectRoute,
     },
+    {
+        path: "/courses",
+        route: courseRoute,
+    }
 ];
 
 Routes.forEach((route) => {
