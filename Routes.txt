@@ -108,3 +108,13 @@ PROJECTS ROUTE:
 5. http://localhost:5050/v1/projects/:id -----> get project by id
 6. http://localhost:5050/v1/projects/update/:id -----> update a project 
 7. http://localhost:5050/v1/projects/update/:projectId/upload-images -----> upload project images
+
+
+COURSES ROUTE:
+
+1. http://localhost:5050/v1/courses/create -----> create a new course (only by teacher or admin)
+2. http://localhost:5050/v1/courses/:courseId -----> get course by id
+3. http://localhost:5050/v1/courses/title/:title -----> get course by title
+4. http://localhost:5050/v1/courses/instructor/:instructorName -----> get course by instructor name
+5. http://localhost:5050/v1/courses/update/:courseId -----> update a course (only by teacher or admin)
+6. http://localhost:5050/v1/courses/delete/:courseId  -----> delete a course (only by teacher or admin)
