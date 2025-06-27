@@ -118,3 +118,11 @@ COURSES ROUTE:
 4. http://localhost:5050/v1/courses/instructor/:instructorName -----> get course by instructor name
 5. http://localhost:5050/v1/courses/update/:courseId -----> update a course (only by teacher or admin)
 6. http://localhost:5050/v1/courses/delete/:courseId  -----> delete a course (only by teacher or admin)
+
+
+FEEDBACK ROUTES:
+
+1. http://localhost:5050/v1/feedbacks/submit -----> create a new feedback (only by student)
+2. http://localhost:5050/v1/feedbacks/update/:feedbackId -----> update a feedback (only by student)
+3. http://localhost:5050/v1/feedbacks/course/:courseId -----> get all feedback by course id
+4. http://localhost:5050/v1/feedbacks/delete/:feedbackId -----> delete feedback (by student or by teacher or by admin)
