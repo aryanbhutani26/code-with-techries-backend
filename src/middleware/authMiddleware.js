@@ -30,13 +30,11 @@ const protect = (roles = []) => {
       next();
     } catch (error) {
       console.error(error);
-      res
-        .status(401)
-        .json({
-          success: false,
-          message: "Unauthorized",
-          error: error.message,
-        });
+      res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+        error: error.message,
+      });
     }
   };
 };
@@ -197,10 +195,51 @@ const protect_Teacher_Student_Admin = async (req, res, next) => {
   }
 };
 
+const protect_Developer_Student = async (req, res, next) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+
+    if (!token) {
+      return res
+        .status(401)
+        .json({ success: false, message: "No token provided" });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const student = await Student.findById(decoded.id);
+    if (student) {
+      req.user = student;
+      req.userType = "student";
+      req.user.role = "student";
+      return next();
+    }
+
+    const developer = await Developer.findById(decoded.id);
+    if (developer) {
+      req.user = developer;
+      req.userType = "developer";
+      req.user.role = "developer";
+      return next();
+    }
+    return res.status(403).json({
+      success: false,
+      message: "Access denied. Invalid role.",
+    });
+  } catch (err) {
+    return res.status(401).json({
+      success: false,
+      message: "Invalid or expired token",
+      error: err.message,
+    });
+  }
+};
+
 export {
   protect,
   protectRecruiterOrAdmin,
   protectDeveloperOrAdmin,
   protectTeacherOrAdmin,
   protect_Teacher_Student_Admin,
+  protect_Developer_Student,
 };

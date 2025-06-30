@@ -126,3 +126,12 @@ FEEDBACK ROUTES:
 2. http://localhost:5050/v1/feedbacks/update/:feedbackId -----> update a feedback (only by student)
 3. http://localhost:5050/v1/feedbacks/course/:courseId -----> get all feedback by course id
 4. http://localhost:5050/v1/feedbacks/delete/:feedbackId -----> delete feedback (by student or by teacher or by admin)
+
+
+CONTRIBUTION ROUTES:
+
+1. http://localhost:5050/v1/leaderboard/add -----> add contribution (only by student & developer)
+2. http://localhost:5050/v1/leaderboard/top -----> get top 5 contribution 
+3. http://localhost:5050/v1/leaderboard/all -----> get all contribution 
+4. http://localhost:5050/v1/leaderboard/project/:projectId -----> get contribution by project ID
+5. http://localhost:5050/v1/leaderboard/webhook -----> github webhook

@@ -13,6 +13,7 @@ import jobRoute from "./jobRoutes.js";
 import projectRoute from "./projectRoutes.js";
 import courseRoute from "./courseRoutes.js";
 import feedbackRoute from "./feedbackRoutes.js";
+import contributionRoute from "./contributionRoutes.js";
 
 const router = express.Router();
 
@@ -72,6 +73,10 @@ const Routes = [
     {
         path: "/feedbacks",
         route: feedbackRoute,
+    },
+    {
+        path: "/leaderboard",
+        route: contributionRoute,
     },
 ];
 
