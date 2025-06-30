@@ -11,6 +11,41 @@ const jobSchema = new mongoose.Schema({
         required: [true, "Job type is required"],
         enum: ["Full-time", "Part-time", "Remote", "Hybrid", "On-site"],
     },
+    jobDeadline: {
+        type: Date,
+        required: [true, "Job deadline is required"],
+        validate: {
+            validator: function(value) {
+                return value > Date.now();
+            },
+            message: "Job deadline must be in the future",
+        },
+    },
+    companyName: {
+        type: String,
+        required: [true, "Company name is required"],
+        trim: true,
+    },
+    companyDescription: {
+        type: String,
+        required: [true, "Company description is required"],
+        maxlength: [500, "Company description must be at most 500 characters long"],
+        trim: true,
+    },
+    companySite: {
+        type: String,
+        required: [true, "Company site is required"],
+        trim: true,
+    },
+    applyLink: {
+        type: String,
+        required: [true, "Apply link is required"],
+        trim: true,
+    },
+    userQualification: {
+        type: [String],
+        required: [true, "User qualifications are required"], 
+    },
     recruitmentQuota: {
         type: Number,
         required: [true, "Recruitment quota is required"],
